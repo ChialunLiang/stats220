@@ -11,4 +11,4 @@ A little about me:
 - One of my favourite books is *I am Number four*
 - An interesting website I know of is the [dynamic, interactive dashboard for Google’s trending searches](https://trends.google.com/tv/?rows=5&cols=5)
 
-A meme that captures how I currently feel about my university studies is ![](https://c.tenor.com/8druEACXtX8AAAAd/tenor.gif)
+A meme that captures how I currently feel about my university studies is ![](https://media.tenor.com/d7jsZ0yCYkoAAAAM/bronya-think-loading-gif.gif)
