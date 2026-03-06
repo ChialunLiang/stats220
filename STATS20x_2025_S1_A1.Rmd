@@ -1,0 +1,101 @@
+---
+title: "STATS 201/8 Assignment 1"
+author: "Samuel Liang clia365"
+date: 'Due Date: 3pm, Tuesday 18th March 2025'
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+  pdf_document:
+    number_sections: yes
+  word_document:
+    number_sections: yes
+---
+
+```{r Setup, include=FALSE}
+# DO NOT ALTER THIS CODE CHUNK, else your document may not compile
+knitr::opts_chunk$set(fig.height=3)
+library(s20x)
+```
+
+# Question 1
+
+In 1886, Francis Galton presented a data set on a sample of adult British children and their of parents. For each child, he had recorded their adult height and the average of their parent’s heights. For each child, he had recorded their adult height and the average of their parent’s heights. His analysis of the data set the stage for correlation, regression and the bivariate normal distribution.
+
+We are going to keep the analysis simple and just consider one child randomly selected from each set of parents and only consider the following question: "is the height of the child is determined by the height of the parent?". In particular, we wished to see if the relationship between the two is approximately one to one, i.e., children grow up to have the same height as the average of their parent’s height - allowing for some error.
+
+The data is stored in the file *Galton.csv* and contains the variables:
+
+| Variable | Description                                           |
+|----------|-------------------------------------------------------|
+| child    | The height (converted to cm) of the child when adult. |
+| parent   | The average height (converted to cm) of the parents.  |
+
+-   Make sure you change your name and UPI/ID number at the top of the assignment.
+-   Comment on the scatter plot of the data.
+-   A simple linear regression model has been fitted and output provided. Stick with the simple linear regression model. (DO NOT CHANGE THE FITTED MODEL.)
+-   Create a scatter plot with the fitted line from the fitted model superimposed over it.Note: a line with slope 1 and intercept (0,0) has also been added to the plot.
+-   Complete the equation of the fitted model as part of the Method and Assumption Checks.
+-   Complete the “% of the variability” statement as part of the Method and Assumption Checks.
+-   Complete the Executive Summary by adding two more sentences. One sentence should be estimating, in context, the effect of a 5 cm increase in the parents average height and the other should be commenting on if this is consistent with a one-to-one relationship between the child and their parents height.
+
+## Question of interest/goal of the study
+
+We wish to investigate the relationship between children and their parents height and determine if this relationship is one-to-one.
+
+## Read in and inspect the data:
+
+```{r,fig.height=4.2,fig.width=6}
+Galton.df=read.csv("Galton.csv", header=T)
+plot(child~parent, main="Childs height versus parents average height",data=Galton.df)
+```
+
+## Comment on the plots
+
+The plot reveals a weak positive linear relationship between child height and parent average height and the scatter is constant
+
+## Fit an appropriate linear model, including model checks and relevant output.
+
+```{r, fig.height=5}
+Galton.lm=lm(child~parent, data=Galton.df)
+modelcheck(Galton.lm)
+
+summary(Galton.lm)
+confint(Galton.lm)
+confint(Galton.lm)*5
+
+```
+
+## Create a scatter plot with the fitted line from your model superimposed over it.
+
+```{r,fig.height=4.2,fig.width=6}
+plot(child~parent, main="Childs height versus parents average height", sub="Solid line = fitted model, dashed line = slope 1",data=Galton.df)
+abline(0,1,lty=2)
+
+# Add some code here
+abline(Galton.lm, col = "red")
+
+
+```
+
+## Method and Assumption Checks
+
+Since we have a linear relationship in the data, we have fitted a simple linear regression model to our data. We have a sample of families, but no information on how these were obtained, so we have to assume they were randomly selected. However, as this study was conducted so long ago when good statistical practice wasn't understood this is unlikely to be the case. There could be doubts about independence. (However problems with multiple children from the same family was solved by randomly choosing one child from each family.) The residuals show patternless scatter with fairly constant variability - so no problems. The normaility checks don't show any major problems (slightly short tails, if anything) and the Cook's plot doesn't reveal any unduly influential points. Overall, all the model assumptions are satisfied. \### Complete the equation below:
+
+Our model is:
+
+$child_i=\beta_0+ \beta_1\times parent_i + \epsilon_i$ where $\epsilon_i \sim iid ~ N(0,\sigma^2)$
+
+### Complete the statement
+
+Our model only explains 11.5% of the variation in the response variable.
+
+## Executive Summary
+
+We are interested in evaluating whether the height of the child is determined by the height of the parent. In particular, we wished to see if the relationship between the two is approximately one to one, i.e., children grow up to have the same height as the average of their parent's height.
+
+We have evidence that of an increasing relationship between the height of child and the average of parent's height.
+
+Based on the confidence interval, a 5 cm increase in the parents' average height is estimated to be associated with an increase in the child's height of approximately 1.86 cm to 4.26 cm.
+
+Since the confidence interval for the effect of a 5 cm increase in parents' height (1.86 to 4.26 cm) does not include 5 cm, this suggests that the relationship between child and parent height is not exactly one-to-one, meaning children tend to be shorter than their parents on average, rather than matching their height directly.
