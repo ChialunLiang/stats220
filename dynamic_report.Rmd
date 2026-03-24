@@ -6,7 +6,9 @@ output: html_fragment
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
 suppressPackageStartupMessages(library(tidyverse))
+```
 
+```{r}
 #import Data from google sheets
 logged_data <- read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv")
 
@@ -61,8 +63,6 @@ latest_data$Actual_Wait_Time <- latest_data$Time_Boarded_Bus_TS - latest_data$Bu
 
 #Convert Actual_Wait_Time from seconds to minutes 
 latest_data$Actual_Wait_Minutes <- as.numeric(latest_data$Actual_Wait_Time, units = "mins")
-
-
 
 ```
 
