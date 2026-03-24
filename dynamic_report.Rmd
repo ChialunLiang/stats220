@@ -74,23 +74,23 @@ latest_data$Actual_Wait_Minutes <- as.numeric(latest_data$Actual_Wait_Time, unit
 
 ```{r echo=FALSE}
 # Summary for Actual_Wait_Minutes
-paste("The minimum time I actually waited was:", 
+paste("The minimum time I actually waited for a bus to come was:", 
       min(latest_data$Actual_Wait_Minutes, na.rm = TRUE), "minutes")
 
-paste("The maximum time I actually waited was:", 
+paste("The maximum time I actually waited for a bus to come was:", 
       max(latest_data$Actual_Wait_Minutes, na.rm = TRUE), "minutes")
 
-paste("The average time I actually waited was:", 
+paste("The average time I actually waited for a bus to come was:", 
       round(mean(latest_data$Actual_Wait_Minutes, na.rm = TRUE), 2), "minutes")
 
 # Summary for At_Mobile_Wait_Time
-paste("The minimum wait time recorded at mobile was:", 
+paste("The minimum wait time for a bus to come recorded on At Mobile was:", 
       min(latest_data$At_Mobile_Wait_Time, na.rm = TRUE), "minutes")
 
-paste("The maximum wait time recorded at mobile was:", 
+paste("The maximum wait time for a bus to come recorded AT Mobile was:", 
       max(latest_data$At_Mobile_Wait_Time, na.rm = TRUE), "minutes")
 
-paste("The average wait time recorded at mobile was:", 
+paste("The average wait time for a bus to come recorded At Mobile was:", 
       round(mean(latest_data$At_Mobile_Wait_Time, na.rm = TRUE), 2), "minutes")
 
 ```
