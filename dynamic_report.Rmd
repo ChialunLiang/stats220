@@ -1,0 +1,135 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+suppressPackageStartupMessages(library(tidyverse))
+
+#import Data from google sheets
+logged_data <- read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv")
+
+
+#Renamed columns of imported data 
+latest_data <- logged_data %>% rename(Bus_Stop_Arrival_Time = 2,
+  At_Mobile_Wait_Time = 3,
+  Bus_Scheduled_Arrival_Time = 4,
+  Departure_Bus_Stop_Number = 5, 
+  Boariding_Bus_Number = 6,
+  Day_Of_Week = 7,
+  Time_Boarded_Bus = 8,
+  AT_Mobile_Occupancy_Status= 9,
+  Bus_Type = 10,
+  Double_Empty_Seats_Available = 11,
+  Sitting_Or_Standing = 12,
+  Time_Off_Bus = 13,
+  Destination_Bus_stop_number = 14,
+  Weather = 15
+)
+
+#Set TimeStamp column date from chr to date 
+latest_data$Date <- as.Date(
+  latest_data$Timestamp,
+  format = "%m/%d/%Y %H:%M:%S"
+)
+
+# Convert Bus_Stop_Arrival_Time data type chr to date-time 
+latest_data$Bus_Stop_Arrival_TS <- as.POSIXct(
+  paste(latest_data$Date, latest_data$Bus_Stop_Arrival_Time),
+  format = "%Y-%m-%d %I:%M:%S %p"
+)
+
+# Convert Time_Boarded_Bus data type chr to date-time 
+latest_data$Time_Boarded_Bus_TS <- as.POSIXct(
+  paste(latest_data$Date, latest_data$Time_Boarded_Bus),
+  format = "%Y-%m-%d %I:%M:%S %p"
+)
+
+# Convert Time_Off_Bus data type chr to date-time 
+latest_data$Time_Off_Bus_TS <- as.POSIXct(
+  paste(latest_data$Date, latest_data$Time_Off_Bus),
+  format = "%Y-%m-%d %I:%M:%S %p"
+)
+
+# Generate new column Trip duration calculated  from Time_Off_Bus_TS - Time_Boarded_Bus_TS
+latest_data$Trip_Duration <- latest_data$Time_Off_Bus_TS - latest_data$Time_Boarded_Bus_TS
+
+
+# Generate new column actual_bus_wait_time from Time_Boarded_Bus_TS - Bus_Stop_Arrival_TS
+latest_data$Actual_Wait_Time <- latest_data$Time_Boarded_Bus_TS - latest_data$Bus_Stop_Arrival_TS
+
+#Convert Actual_Wait_Time from seconds to minutes 
+latest_data$Actual_Wait_Minutes <- as.numeric(latest_data$Actual_Wait_Time, units = "mins")
+
+
+
+```
+
+```{css}
+
+```
+
+## Summary values
+
+```{r echo=FALSE}
+# Summary for Actual_Wait_Minutes
+paste("The minimum time I actually waited was:", 
+      min(latest_data$Actual_Wait_Minutes, na.rm = TRUE), "minutes")
+
+paste("The maximum time I actually waited was:", 
+      max(latest_data$Actual_Wait_Minutes, na.rm = TRUE), "minutes")
+
+paste("The average time I actually waited was:", 
+      round(mean(latest_data$Actual_Wait_Minutes, na.rm = TRUE), 2), "minutes")
+
+# Summary for At_Mobile_Wait_Time
+paste("The minimum wait time recorded at mobile was:", 
+      min(latest_data$At_Mobile_Wait_Time, na.rm = TRUE), "minutes")
+
+paste("The maximum wait time recorded at mobile was:", 
+      max(latest_data$At_Mobile_Wait_Time, na.rm = TRUE), "minutes")
+
+paste("The average wait time recorded at mobile was:", 
+      round(mean(latest_data$At_Mobile_Wait_Time, na.rm = TRUE), 2), "minutes")
+
+```
+
+## Bar charts
+
+```{r echo=FALSE}
+# Actual_Wait_Minutes vs At_Mobile_Wait_Time
+ggplot(latest_data, aes(x = Timestamp)) +
+  geom_col(aes(y = Actual_Wait_Minutes), 
+           fill = "blue", width = 0.4) +
+  geom_col(aes(y = At_Mobile_Wait_Time), 
+           fill = "red", width = 0.4, 
+           position = position_nudge(x = 0.2)) +
+  labs(title = "Actual_Wait_Minutes vs At_Mobile_Wait_Time",
+       subtitle =  "blue = Actual_Wait_Minutes, red = At_Mobile_Wait_Time",
+       caption = "Source: My Obsevation log",
+       x = "Date", 
+       y = "Wait Time (minutes)",) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+
+#AT_Mobile_Occupancy_Status vs Day_Of_Week
+latest_data %>%
+  ggplot() +
+  geom_bar(aes(y = AT_Mobile_Occupancy_Status, 
+               fill = Day_Of_Week)) +
+  labs(title = "AT_Mobile_Occupancy_Status vs Weather",
+       caption = "Source: My Obsevation log",
+       x = "AT_Mobile_Occupancy_Status Count",
+       y = "AT_Mobile_Occupancy_Status type ")
+
+#AT_Mobile_Occupancy_Status vs Weather",
+latest_data %>%
+  ggplot() +
+  geom_bar(aes(y = AT_Mobile_Occupancy_Status, fill = Weather)) +
+  labs(title = "AT_Mobile_Occupancy_Status vs Weather",
+       caption = "Source: My Obsevation log",
+       x = "AT_Mobile_Occupancy_Status Count",
+       y = "AT_Mobile_Occupancy_Status type ")
+
+```
