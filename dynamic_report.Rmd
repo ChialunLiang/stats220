@@ -106,7 +106,7 @@ paste("The average wait time for a bus to come recorded At Mobile was:",
 
 ## Bar charts
 
-## Actual_Wait_Minutes vs At_Mobile_Wait_Time Bar Chart
+## Actual_Wait_Minutes vs AT_Mobile_Wait_Time Bar Chart
 
 **Nature of the data:**  
 This plot visualises **quantitative time-based variables** (`Actual_Wait_Minutes` and `AT_Mobile_Wait_Time`) for each trip. Each timestamp represents a repeated observation of a single bus journey.
@@ -125,8 +125,8 @@ ggplot(latest_data, aes(x = Timestamp)) +
   geom_col(aes(y = At_Mobile_Wait_Time), 
            fill = "red", width = 0.4, 
            position = position_nudge(x = 0.2)) +
-  labs(title = "Actual Wait Minutes vs At Mobile Wait Time",
-       subtitle =  "blue = Actual Wait Minutes, red = At Mobile Wait Time",
+  labs(title = "Actual Wait Minutes vs AT Mobile Wait Time",
+       subtitle =  "blue = Actual Wait Minutes, red = AT Mobile Wait Time",
        caption = "Source: My Obsevation log",
        x = "Date", 
        y = "Wait Time (minutes)",) +
