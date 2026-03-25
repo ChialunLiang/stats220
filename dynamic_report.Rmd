@@ -3,17 +3,17 @@ title: My dynamic report
 output: html_fragment
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
-
-
 ```
 
 ```{r echo=FALSE}
 suppressPackageStartupMessages(library(tidyverse))
+```
 
+```{r}
 #import Data from google sheets
-logged_data <- read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv")
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv")
 
 #Renamed columns of imported data 
 latest_data <- logged_data %>% rename(Bus_Stop_Arrival_Time = 2,
@@ -65,7 +65,6 @@ latest_data$Actual_Wait_Time <- latest_data$Time_Boarded_Bus_TS - latest_data$Bu
 
 #Convert Actual_Wait_Time from seconds to minutes 
 latest_data$Actual_Wait_Minutes <- as.numeric(latest_data$Actual_Wait_Time, units = "mins")
-
 
 ```
 
