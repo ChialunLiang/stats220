@@ -6,12 +6,13 @@ output: html_fragment
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
 suppressPackageStartupMessages(library(tidyverse))
+
+
 ```
 
 ```{r echo=FALSE}
 #import Data from google sheets
 logged_data <- read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv")
-
 
 #Renamed columns of imported data 
 latest_data <- logged_data %>% rename(Bus_Stop_Arrival_Time = 2,
@@ -64,13 +65,21 @@ latest_data$Actual_Wait_Time <- latest_data$Time_Boarded_Bus_TS - latest_data$Bu
 #Convert Actual_Wait_Time from seconds to minutes 
 latest_data$Actual_Wait_Minutes <- as.numeric(latest_data$Actual_Wait_Time, units = "mins")
 
+
 ```
 
 ```{css}
 
 ```
 
-## Summary values
+## Summary of Bus Wait Times
+
+**Nature of the data:**  
+This section uses **quantitative, time-based data**. The variables `Actual_Wait_Minutes` and `At_Mobile_Wait_Time` record numeric wait times in minutes for each bus trip. The data is observational and consists of repeated measurements collected at multiple timestamps for different trips.
+
+**What I am analysing:**  
+I am analysing differences between the **actual time waited at the bus stop** and the **predicted wait time from the AT Mobile app**. Calculating the **minimum, maximum, and average wait times** allows identification of trends in bus service reliability and the consistency of app predictions.
+
 
 ```{r echo=FALSE}
 # Summary for Actual_Wait_Minutes
@@ -97,7 +106,18 @@ paste("The average wait time for a bus to come recorded At Mobile was:",
 
 ## Bar charts
 
+## Actual_Wait_Minutes vs At_Mobile_Wait_Time Bar Chart
+
+**Nature of the data:**  
+This plot visualises **quantitative time-based variables** (`Actual_Wait_Minutes` and `AT_Mobile_Wait_Time`) for each trip. Each timestamp represents a repeated observation of a single bus journey.
+
+**What I am analysing:**  
+The chart compares **actual vs predicted wait times** to determine whether buses arrive earlier or later than expected, and to evaluate the accuracy and consistency of the app’s predictions over multiple trips.
+
+
 ```{r echo=FALSE}
+
+
 # Actual_Wait_Minutes vs At_Mobile_Wait_Time
 ggplot(latest_data, aes(x = Timestamp)) +
   geom_col(aes(y = Actual_Wait_Minutes), 
@@ -111,8 +131,17 @@ ggplot(latest_data, aes(x = Timestamp)) +
        x = "Date", 
        y = "Wait Time (minutes)",) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
 
+## Bus Occupancy by Day of the Week
 
+**Nature of the data:**  
+This section uses **categorical data**. `AT_Mobile_Occupancy_Status` indicates crowding levels on the bus, while `Day_Of_Week` identifies the day each observation was made. The data is observational and collected over multiple trips.
+
+**What I am analysing:**  
+I am analysing how **bus occupancy varies by day of the week**, identifying patterns in crowding. This shows which days tend to have more standing passengers or more available seats, highlighting trends in passenger load across the week.
+
+```{r}
 #AT_Mobile_Occupancy_Status vs Day_Of_Week
 latest_data %>%
   ggplot() +
@@ -122,7 +151,17 @@ latest_data %>%
        caption = "Source: My Obsevation log",
        x = "AT_Mobile_Occupancy_Status Count",
        y = "AT_Mobile_Occupancy_Status type ")
+```
 
+## Bus Occupancy by Weather
+
+**Nature of the data:**  
+This section also uses **categorical data**. `AT_Mobile_Occupancy_Status` shows crowding levels, while `Weather` records conditions during each trip. Data is repeated over multiple trips and weather types.
+
+**What I am analysing:**  
+I am analysing how **bus occupancy changes under different weather conditions**, to understand whether weather affects crowding and passenger comfort. The plot helps reveal trends such as more standing passengers on rainy days or more available seating on sunny days.
+
+```{r}
 #AT_Mobile_Occupancy_Status vs Weather",
 latest_data %>%
   ggplot() +
