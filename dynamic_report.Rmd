@@ -125,8 +125,8 @@ ggplot(latest_data, aes(x = Timestamp)) +
   geom_col(aes(y = At_Mobile_Wait_Time), 
            fill = "red", width = 0.4, 
            position = position_nudge(x = 0.2)) +
-  labs(title = "Actual_Wait_Minutes vs At_Mobile_Wait_Time",
-       subtitle =  "blue = Actual_Wait_Minutes, red = At_Mobile_Wait_Time",
+  labs(title = "Actual Wait Minutes vs At Mobile Wait Time",
+       subtitle =  "blue = Actual Wait Minutes, red = At Mobile Wait Time",
        caption = "Source: My Obsevation log",
        x = "Date", 
        y = "Wait Time (minutes)",) +
@@ -147,10 +147,10 @@ latest_data %>%
   ggplot() +
   geom_bar(aes(y = AT_Mobile_Occupancy_Status, 
                fill = Day_Of_Week)) +
-  labs(title = "AT_Mobile_Occupancy_Status vs Weather",
+  labs(title = "AT Mobile Occupancy Status vs Weather",
        caption = "Source: My Obsevation log",
-       x = "AT_Mobile_Occupancy_Status Count",
-       y = "AT_Mobile_Occupancy_Status type ")
+       x = "AT Mobile Occupancy Status Count",
+       y = "AT Mobile Occupancy Status type ")
 ```
 
 ## Bus Occupancy by Weather
@@ -166,9 +166,9 @@ I am analysing how **bus occupancy changes under different weather conditions**,
 latest_data %>%
   ggplot() +
   geom_bar(aes(y = AT_Mobile_Occupancy_Status, fill = Weather)) +
-  labs(title = "AT_Mobile_Occupancy_Status vs Weather",
+  labs(title = "AT Mobile Occupancy Status vs Weather",
        caption = "Source: My Obsevation log",
-       x = "AT_Mobile_Occupancy_Status Count",
-       y = "AT_Mobile_Occupancy_Status type ")
+       x = "AT Mobile Occupancy Status Count",
+       y = "AT Mobile Occupancy Status type ")
 
 ```
