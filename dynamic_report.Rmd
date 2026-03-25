@@ -126,7 +126,7 @@ ggplot(latest_data, aes(x = Timestamp)) +
        subtitle =  "blue = Actual Wait Minutes, red = AT Mobile Wait Time",
        caption = "Source: My Obsevation log",
        x = "Date", 
-       y = "Wait Time (minutes)",) +
+       y = "Wait Time (minutes)") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 ```
 
