@@ -120,10 +120,8 @@ The chart compares **actual vs predicted wait times** to determine whether buses
 
 # Actual_Wait_Minutes vs At_Mobile_Wait_Time
 ggplot(latest_data, aes(x = Timestamp)) +
-  geom_col(aes(y = Actual_Wait_Minutes), 
-           fill = "blue", width = 0.4) +
-  geom_col(aes(y = At_Mobile_Wait_Time), 
-           fill = "red", width = 0.4, 
+  geom_col(aes(y = Actual_Wait_Minutes), fill = "blue", width = 0.4) +
+  geom_col(aes(y = At_Mobile_Wait_Time), fill = "red", width = 0.4), 
            position = position_nudge(x = 0.2)) +
   labs(title = "Actual Wait Minutes vs AT Mobile Wait Time",
        subtitle =  "blue = Actual Wait Minutes, red = AT Mobile Wait Time",
