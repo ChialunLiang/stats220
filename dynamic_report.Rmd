@@ -7,7 +7,7 @@ output: html_fragment
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
 ```
 
-```{r, echo=FALSE}
+```{r}
 library(tidyverse)
 
 #import Data from google sheets
@@ -81,7 +81,7 @@ This section uses **quantitative, time-based data**. The variables `Actual_Wait_
 I am analysing differences between the **actual time waited at the bus stop** and the **predicted wait time from the AT Mobile app**. Calculating the **minimum, maximum, and average wait times** allows identification of trends in bus service reliability and the consistency of app predictions.
 
 
-```{r echo=FALSE}
+```{r}
 # Summary for Actual_Wait_Minutes
 paste("The minimum time I actually waited for a bus to come was:", 
       min(latest_data$Actual_Wait_Minutes, na.rm = TRUE), "minutes")
@@ -115,7 +115,7 @@ This plot visualises **quantitative time-based variables** (`Actual_Wait_Minutes
 The chart compares **actual vs predicted wait times** to determine whether buses arrive earlier or later than expected, and to evaluate the accuracy and consistency of the app’s predictions over multiple trips.
 
 
-```{r echo=FALSE}
+```{r}
 
 
 # Actual_Wait_Minutes vs At_Mobile_Wait_Time
