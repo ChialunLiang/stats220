@@ -5,15 +5,14 @@ output: html_fragment
 
 ```{r, setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
-suppressPackageStartupMessages(library(tidyverse))
-
-
 ```
 
 ```{r}
-suppressPackageStartupMessages(library(tidyverse))
+library(tidyverse)
+
 #import Data from google sheets
-logged_data <- read.csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv")
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv")
+
 
 #Renamed columns of imported data 
 latest_data <- logged_data %>% rename(Bus_Stop_Arrival_Time = 2,
@@ -107,7 +106,7 @@ paste("The average wait time for a bus to come recorded At Mobile was:",
 
 ## Bar charts
 
-## Actual_Wait_Minutes vs At_Mobile_Wait_Time Bar Chart
+## Actual_Wait_Minutes vs AT_Mobile_Wait_Time Bar Chart
 
 **Nature of the data:**  
 This plot visualises **quantitative time-based variables** (`Actual_Wait_Minutes` and `AT_Mobile_Wait_Time`) for each trip. Each timestamp represents a repeated observation of a single bus journey.
@@ -121,13 +120,10 @@ The chart compares **actual vs predicted wait times** to determine whether buses
 
 # Actual_Wait_Minutes vs At_Mobile_Wait_Time
 ggplot(latest_data, aes(x = Timestamp)) +
-  geom_col(aes(y = Actual_Wait_Minutes), 
-           fill = "blue", width = 0.4) +
-  geom_col(aes(y = At_Mobile_Wait_Time), 
-           fill = "red", width = 0.4, 
-           position = position_nudge(x = 0.2)) +
+  geom_col(aes(y = Actual_Wait_Minutes), fill = "blue", width = 0.4) +
+  geom_col(aes(y = At_Mobile_Wait_Time), fill = "red", width = 0.4, position = position_nudge(x = 0.2)) +
   labs(title = "Actual Wait Minutes vs AT Mobile Wait Time",
-       subtitle =  "blue = Actual Wait Minutes, red = At Mobile Wait Time",
+       subtitle =  "blue = Actual Wait Minutes, red = AT Mobile Wait Time",
        caption = "Source: My Obsevation log",
        x = "Date", 
        y = "Wait Time (minutes)") +
