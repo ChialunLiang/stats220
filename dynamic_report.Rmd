@@ -83,7 +83,7 @@ latest_data$Actual_Wait_Minutes <- as.numeric(latest_data$Actual_Wait_Time, unit
 # Summary of Bus Wait Times
 
 **Nature of the data:**\
-This section uses **quantitative, time-based data**. The variables `Actual Wait Minutes` and `At Mobile Wait Time` record numeric wait times in minutes for each bus trip. The data is observational and consists of repeated measurements collected at multiple timestamps for different trips.
+This section uses **quantitative, time-based data**. The variables `Actual Wait Minutes` and `AT Mobile Wait Time` record numeric wait times in minutes for each bus trip. The data is observational and consists of repeated measurements collected at multiple timestamps for different trips.
 
 **What I am analysing:**\
 I am analysing differences between the **actual time waited at the bus stop** and the **predicted wait time from the AT Mobile app**. Calculating the **minimum, maximum, and average wait times** allows identification of trends in bus service reliability and the consistency of app predictions.
@@ -113,7 +113,7 @@ ggplot(latest_data, aes(x = Timestamp)) +
            fill = "red", width = 0.4, 
            position = position_nudge(x = 0.2)) +
   labs(title = "Actual Wait Minutes vs AT Mobile Wait Time",
-       subtitle =  "blue = Actual Wait Minutes, red = At Mobile Wait Time",
+       subtitle =  "blue = Actual Wait Minutes, red = AT Mobile Wait Time",
        caption = "Source: My Obsevation log",
        x = "Date", 
        y = "Wait Time (minutes)") +
