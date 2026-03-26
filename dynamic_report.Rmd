@@ -5,24 +5,34 @@ output: html_fragment
 
 ```{r, setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
 ```
 
 ```{r}
 library(tidyverse)
 
-#import Data from google sheets
-logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv")
 
+# Import data from Google Sheets, keep time columns as character
+logged_data <- read_csv(
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vReF3vvFTYztjwdvP619aEGeKT4gSAO3CgVGqMzVhwYX-cG1owc7YRPli22YF7K8-uo9QDpu_4cFxUd/pub?gid=743329457&single=true&output=csv",
+  col_types = cols(
+    Timestamp             = col_character(),
+    Bus_Stop_Arrival_Time = col_character(),
+    Time_Boarded_Bus      = col_character(),
+    Time_Off_Bus          = col_character()
+  )
+)
 
-#Renamed columns of imported data 
-latest_data <- logged_data %>% rename(Bus_Stop_Arrival_Time = 2,
+# Rename columns for clarity
+latest_data <- logged_data %>% rename(
+  Bus_Stop_Arrival_Time = 2,
   At_Mobile_Wait_Time = 3,
   Bus_Scheduled_Arrival_Time = 4,
-  Departure_Bus_Stop_Number = 5, 
+  Departure_Bus_Stop_Number = 5,
   Boariding_Bus_Number = 6,
   Day_Of_Week = 7,
   Time_Boarded_Bus = 8,
-  AT_Mobile_Occupancy_Status= 9,
+  AT_Mobile_Occupancy_Status = 9,
   Bus_Type = 10,
   Double_Empty_Seats_Available = 11,
   Sitting_Or_Standing = 12,
@@ -31,40 +41,28 @@ latest_data <- logged_data %>% rename(Bus_Stop_Arrival_Time = 2,
   Weather = 15
 )
 
-#Set TimeStamp column date from chr to date 
-latest_data$Date <- as.Date(
-  latest_data$Timestamp,
-  format = "%m/%d/%Y %H:%M:%S"
-)
+# Convert Timestamp to Date
+latest_data$Date <- as.Date(latest_data$Timestamp, format = "%m/%d/%Y %H:%M:%S")
 
-# Convert Bus_Stop_Arrival_Time data type chr to date-time 
-latest_data$Bus_Stop_Arrival_TS <- as.POSIXct(
-  paste(latest_data$Date, latest_data$Bus_Stop_Arrival_Time),
-  format = "%m/%d/%Y %H:%M:%S"
-)
-
-# Convert Time_Boarded_Bus data type chr to date-time 
-latest_data$Time_Boarded_Bus_TS <- as.POSIXct(
-  paste(latest_data$Date, latest_data$Time_Boarded_Bus),
-  format = "%m/%d/%Y %H:%M:%S"
-)
-
-# Convert Time_Off_Bus data type chr to date-time 
-latest_data$Time_Off_Bus_TS <- as.POSIXct(
-  paste(latest_data$Date, latest_data$Time_Off_Bus),
-  format = "%m/%d/%Y %H:%M:%S"
-)
-
-# Generate new column Trip duration calculated  from Time_Off_Bus_TS - Time_Boarded_Bus_TS
-latest_data$Trip_Duration <- latest_data$Time_Off_Bus_TS - latest_data$Time_Boarded_Bus_TS
-
-
-# Generate new column actual_bus_wait_time from Time_Boarded_Bus_TS - Bus_Stop_Arrival_TS
-latest_data$Actual_Wait_Time <- latest_data$Time_Boarded_Bus_TS - latest_data$Bus_Stop_Arrival_TS
-
-#Convert Actual_Wait_Time from seconds to minutes 
-latest_data$Actual_Wait_Minutes <- as.numeric(latest_data$Actual_Wait_Time, units = "mins")
-
+# Convert 24-hour time columns to POSIXct
+latest_data <- latest_data %>%
+  mutate(
+    Bus_Stop_Arrival_TS = as.POSIXct(
+      paste(Date, Bus_Stop_Arrival_Time),
+      format = "%Y-%m-%d %H:%M:%S"
+    ),
+    Time_Boarded_Bus_TS = as.POSIXct(
+      paste(Date, Time_Boarded_Bus),
+      format = "%Y-%m-%d %H:%M:%S"
+    ),
+    Time_Off_Bus_TS = as.POSIXct(
+      paste(Date, Time_Off_Bus),
+      format = "%Y-%m-%d %H:%M:%S"
+    ),
+    Trip_Duration = Time_Off_Bus_TS - Time_Boarded_Bus_TS,
+    Actual_Wait_Time = Time_Boarded_Bus_TS - Bus_Stop_Arrival_TS,
+    Actual_Wait_Minutes = as.numeric(Actual_Wait_Time, units = "mins")
+  )
 
 ```
 
@@ -106,7 +104,7 @@ paste("The average wait time for a bus to come recorded At Mobile was:",
 
 ## Bar charts
 
-## Actual_Wait_Minutes vs AT_Mobile_Wait_Time Bar Chart
+## Actual_Wait_Minutes vs At_Mobile_Wait_Time Bar Chart
 
 **Nature of the data:**  
 This plot visualises **quantitative time-based variables** (`Actual_Wait_Minutes` and `AT_Mobile_Wait_Time`) for each trip. Each timestamp represents a repeated observation of a single bus journey.
@@ -120,10 +118,13 @@ The chart compares **actual vs predicted wait times** to determine whether buses
 
 # Actual_Wait_Minutes vs At_Mobile_Wait_Time
 ggplot(latest_data, aes(x = Timestamp)) +
-  geom_col(aes(y = Actual_Wait_Minutes), fill = "blue", width = 0.4) +
-  geom_col(aes(y = At_Mobile_Wait_Time), fill = "red", width = 0.4, position = position_nudge(x = 0.2)) +
+  geom_col(aes(y = Actual_Wait_Minutes), 
+           fill = "blue", width = 0.4) +
+  geom_col(aes(y = At_Mobile_Wait_Time), 
+           fill = "red", width = 0.4, 
+           position = position_nudge(x = 0.2)) +
   labs(title = "Actual Wait Minutes vs AT Mobile Wait Time",
-       subtitle =  "blue = Actual Wait Minutes, red = AT Mobile Wait Time",
+       subtitle =  "blue = Actual Wait Minutes, red = At Mobile Wait Time",
        caption = "Source: My Obsevation log",
        x = "Date", 
        y = "Wait Time (minutes)") +
