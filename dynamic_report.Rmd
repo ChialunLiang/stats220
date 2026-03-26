@@ -32,6 +32,12 @@ latest_data <- logged_data %>% rename(Bus_Stop_Arrival_Time = 2,
   Weather = 15
 )
 
+#Creating data columns that are data-time type objects intead of strings for calculation 
+#The functions as.Date() and as.POSIXct() I have learnt by googling and found on this website
+#https://www.neonscience.org/resources/learning-hub/tutorials/dc-convert-date-time-posix-r
+#I have also discussed the usage of these functions with Liza 
+
+
 #Generate new column Date using TimeStamp column date from chr to date 
 latest_data$Date <- as.Date(
   latest_data$Timestamp,
@@ -74,7 +80,7 @@ latest_data$Actual_Wait_Minutes <- as.numeric(latest_data$Actual_Wait_Time, unit
 
 ```
 
-## Summary of Bus Wait Times
+# Summary of Bus Wait Times
 
 **Nature of the data:**\
 This section uses **quantitative, time-based data**. The variables `Actual Wait Minutes` and `At Mobile Wait Time` record numeric wait times in minutes for each bus trip. The data is observational and consists of repeated measurements collected at multiple timestamps for different trips.
@@ -86,9 +92,9 @@ The minimum time I actually waited for a bus to come was `r min(latest_data$Actu
 
 The minimum wait time for a bus recorded on AT Mobile was `r min(latest_data$AT_Mobile_Wait_Time, na.rm = TRUE)` minutes, the maximum was `r max(latest_data$AT_Mobile_Wait_Time, na.rm = TRUE)` minutes, and the average wait time was `r round(mean(latest_data$AT_Mobile_Wait_Time, na.rm = TRUE), 2)` minutes.
 
-## Bar charts
+# Bar charts
 
-## Actual Wait Minutes vs At Mobile Wait Time Bar Chart
+## Actual Wait Minutes vs At MobileWait Time Bar Chart
 
 **Nature of the data:**\
 This plot visualises **quantitative time-based variables** (`Actual Wait Minutes` and `AT Mobile Wait Time`) for each trip. Each timestamp represents a repeated observation of a single bus journey.
