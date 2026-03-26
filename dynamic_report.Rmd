@@ -94,7 +94,7 @@ The minimum wait time for a bus recorded on AT Mobile was `r min(latest_data$AT_
 
 # Bar charts
 
-## Actual Wait Minutes vs At MobileWait Time Bar Chart
+## Actual Wait Minutes vs AT Mobile Wait Time Bar Chart
 
 **Nature of the data:**\
 This plot visualises **quantitative time-based variables** (`Actual Wait Minutes` and `AT Mobile Wait Time`) for each trip. Each timestamp represents a repeated observation of a single bus journey.
