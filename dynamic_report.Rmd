@@ -40,19 +40,19 @@ latest_data$Date <- as.Date(
 # Convert Bus_Stop_Arrival_Time data type chr to date-time 
 latest_data$Bus_Stop_Arrival_TS <- as.POSIXct(
   paste(latest_data$Date, latest_data$Bus_Stop_Arrival_Time),
-  format = "%Y-%m-%d %I:%M:%S %p"
+  format = "%m/%d/%Y %H:%M:%S"
 )
 
 # Convert Time_Boarded_Bus data type chr to date-time 
 latest_data$Time_Boarded_Bus_TS <- as.POSIXct(
   paste(latest_data$Date, latest_data$Time_Boarded_Bus),
-  format = "%Y-%m-%d %I:%M:%S %p"
+  format = "%m/%d/%Y %H:%M:%S"
 )
 
 # Convert Time_Off_Bus data type chr to date-time 
 latest_data$Time_Off_Bus_TS <- as.POSIXct(
   paste(latest_data$Date, latest_data$Time_Off_Bus),
-  format = "%Y-%m-%d %I:%M:%S %p"
+  format = "%m/%d/%Y %H:%M:%S"
 )
 
 # Generate new column Trip duration calculated  from Time_Off_Bus_TS - Time_Boarded_Bus_TS
